@@ -1,11 +1,15 @@
 %% Exemplo de Classificação com iris_dataset
 clear all; clc; close all;
-%% Voce vai precisar de:
+
+%% Voce vai precisar de: 
+% https://github.com/vander-silva/ann-2021
 % 1) main_script_2021.m         >> este arquivo: manipular dataset
 % 2) embaralhar.m               >> funcao para embaralhar um vetor
 % 3) ann_net_project_example.m  >> script para projetar a rede neural
-%%
+
+%% Carga do Dataset
 load iris_dataset.mat
+
 %% Iris: load iris_dataset.mat
 %   irisInputs               4x150               4800  double                   
 %   irisTargets              3x150               3600  double 
@@ -19,6 +23,7 @@ load iris_dataset.mat
 %    [1] Iris setosa
 %    [2] Iris versicolor
 %    [3] Iris virginica
+
 %% 1) VISULIZAR O FORMATO DOS DADOS
 whos;
 irisInput_names   = {'Sepal Length';'Sepal Width';'Petal Length';'Petal Width'};
@@ -27,6 +32,7 @@ cl_indices = [1,51,101,52]; % cl_indices = [1,2,3,4];  cl_indices = [1,51,101,52
 disp([ irisInput_names, num2cell(          irisInputs(:,cl_indices))]);
 disp([irisTarget_names, num2cell(         irisTargets(:,cl_indices))]);
 disp(['vec2ind   '    , num2cell([vec2ind(irisTargets(:,cl_indices))])]);
+
 %% 2) ANÁISE GRÁFICA DOS DADOS
 figure('Name','Gráfico de Dispersão','Position',[1 1 1303 961]);     cl_cont = 1;
 for cl_lin = 1:4
@@ -46,11 +52,13 @@ for cl_lin = 1:4
     end
 end
 clear -regexp ^cl ans; whos;
+
 %% 3) DISTRIBUIÇÃO DAS CLASSES
 figure('Name','Distribuição das Classes','Position',[1 1 1303 607]);
 stem(vec2ind(irisTargets(:,:))); grid on; axis([-20 170 0 3.2]);
 yticks([1  2  3]); yticklabels({'Classe 1','Classe 2','Classe 3'});
 xlabel('Amostras de Alvo'); xticks([0 50 100 150]); 
+
 %% 4) DIVISÃO DAS AMOSTRAS: DATASETS TREIN. VALID. TEST. 
 % [0.68 0.16 0.16]*150 = [102   24   24]
 %             Treinamento  Validação      Teste
@@ -58,6 +66,7 @@ xlabel('Amostras de Alvo'); xticks([0 50 100 150]);
 % Classe 2:            34          8          8 
 % Classe 3:            34          8          8 
 %         TOTAL:      102         24         24
+
 %% 4.1) Dataset de Treinamento
 index_trein = embaralhar([1:34, 51:84, 101:134]); 
 irisInputs_trein  = irisInputs (:,index_trein);
@@ -67,6 +76,7 @@ figure('Name','Distribuição das Classes - Treinamento','Position',[1 1 1303 607]
 stem(vec2ind(irisTargets_trein(:,:))); grid on; axis([-10 114 0 3.2]);
 yticks([1  2  3]); yticklabels({'Classe 1','Classe 2','Classe 3'});
 xlabel('Amostras de Alvo - Dataset Treinamento'); xticks([0 34 68 102]); 
+
 %% 4.2) Dataset de Validação
 index_valid = embaralhar([35:42, 85:92, 135:142]);
 irisInputs_valid  = irisInputs (:,index_valid);
@@ -76,6 +86,7 @@ figure('Name','Distribuição das Classes - Validação','Position',[1 1 1303 607]);
 stem(vec2ind(irisTargets_valid(:,:))); grid on; axis([-3 27 0 3.2]);
 yticks([1  2  3]); yticklabels({'Classe 1','Classe 2','Classe 3'});
 xlabel('Amostras de Alvo - Dataset Validação'); xticks([0 8 16 24]); 
+
 %% 4.3) Dataset de Testes
 index_test = embaralhar([43:50, 93:100, 143:150]);
 irisInputs_test  = irisInputs (:,index_test);
@@ -85,6 +96,7 @@ figure('Name','Distribuição das Classes - Testes','Position',[1 1 1303 607]);
 stem(vec2ind(irisTargets_test(:,:))); grid on; axis([-3 27 0 3.2]);
 yticks([1  2  3]); yticklabels({'Classe 1','Classe 2','Classe 3'});
 xlabel('Amostras de Alvo - Dataset Testes'); xticks([0 8 16 24]);  
+
 %% 5) Toolbox de ANN - nnstart
 % nnstart;
 % ann_net_project_example;
